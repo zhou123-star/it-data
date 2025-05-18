@@ -43,10 +43,13 @@ x-common-env: &common-env
   SEARXNG_ENDPOINT: ${SEARXNG_ENDPOINT}
   SEARXNG_ENGINES: ${SEARXNG_ENGINES}
   SEARXNG_CATEGORIES: ${SEARXNG_CATEGORIES}
+  GOPROXY: https://goproxy.cn,direct
 
 services:
   playwright-service:
     build: apps/playwright-service-ts
+    security_opt:
+      - seccomp=unconfined
     environment:
       PORT: 3000
       PROXY_SERVER: ${PROXY_SERVER}
@@ -63,9 +66,14 @@ services:
       HOST: "0.0.0.0"
       PORT: ${INTERNAL_PORT:-3002}
       FLY_PROCESS_GROUP: app
+      GOPROXY: https://goproxy.cn,direct  # 明确添加这一行 
+      GOSUMDB: sum.golang.google.cn 
+      GONOSUMDB: github.com/tomkosm/html-to-markdown  
     depends_on:
       - redis
       - playwright-service
+    security_opt:
+      - seccomp=unconfined
     ports:
       - "${PORT:-3002}:${INTERNAL_PORT:-3002}"
     command: [ "pnpm", "run", "start:production" ]
@@ -79,6 +87,8 @@ services:
       - redis
       - playwright-service
       - api
+    security_opt:
+      - seccomp=unconfined
     command: [ "pnpm", "run", "workers" ]
 
   redis:

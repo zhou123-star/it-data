@@ -1,10 +1,9 @@
 module html-to-markdown.go
 
-go 1.19
-
-require github.com/tomkosm/html-to-markdown v0.0.0-20250128162844-2f19490e042d
+go 1.18
 
 require (
+	github.com/JohannesKaufmann/html-to-markdown v1.4.0
 	github.com/PuerkitoBio/goquery v1.9.2 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
